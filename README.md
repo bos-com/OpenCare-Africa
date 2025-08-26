@@ -1,4 +1,4 @@
-# OpenCare-Africa Core
+# OpenCare-Africa
 
 A comprehensive health informatics platform backend built with Django, designed specifically for healthcare management in Africa.
 
