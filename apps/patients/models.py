@@ -143,7 +143,7 @@ class PatientVisit(models.Model):
     prescription = models.JSONField(default=list)
     
     # Healthcare Provider
-    attending_provider = models.ForeignKey('apps.core.User', on_delete=models.SET_NULL, null=True, blank=True)
+    attending_provider = models.ForeignKey('core.User', on_delete=models.SET_NULL, null=True, blank=True)
     
     # Financial
     consultation_fee = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -185,7 +185,7 @@ class PatientMedicalHistory(models.Model):
     outcomes = models.TextField(blank=True)
     
     # Healthcare Provider
-    diagnosed_by = models.ForeignKey('apps.core.User', on_delete=models.SET_NULL, null=True, blank=True)
+    diagnosed_by = models.ForeignKey('core.User', on_delete=models.SET_NULL, null=True, blank=True)
     facility = models.ForeignKey(HealthFacility, on_delete=models.CASCADE)
     
     notes = models.TextField(blank=True)

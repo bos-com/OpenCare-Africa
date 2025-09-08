@@ -31,7 +31,7 @@ django-silk==5.0.4
 
 # Security Testing
 bandit==1.7.5
-safety==2.3.5
+safety>=2.4.0
 
 # Local Development
 python-dotenv==1.0.0

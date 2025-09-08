@@ -34,17 +34,17 @@ urlpatterns = [
     # Patient Management
     path('patients/', include('apps.patients.urls')),
     
-    # Health Workers
-    path('health-workers/', include('apps.health_workers.urls')),
+    # Health Workers - temporarily commented out
+    # path('health-workers/', include('apps.health_workers.urls')),
     
-    # Facilities
-    path('facilities/', include('apps.facilities.urls')),
+    # Facilities - temporarily commented out
+    # path('facilities/', include('apps.facilities.urls')),
     
-    # Health Records
-    path('records/', include('apps.records.urls')),
+    # Health Records - temporarily commented out
+    # path('records/', include('apps.records.urls')),
     
-    # Analytics
-    path('analytics/', include('apps.analytics.urls')),
+    # Analytics - temporarily commented out
+    # path('analytics/', include('apps.analytics.urls')),
 ]
 
 # Serve static and media files in development

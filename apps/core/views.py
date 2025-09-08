@@ -97,3 +97,121 @@ class SystemStatusView(LoginRequiredMixin, View):
             'system_status': system_status,
         }
         return render(request, 'core/system_status.html', context)
+
+
+@require_http_methods(["GET"])
+def system_info(request):
+    """System information endpoint."""
+    return JsonResponse({
+        'name': 'OpenCare-Africa',
+        'version': '1.0.0',
+        'description': 'Health Informatics Platform for Africa',
+        'features': [
+            'Patient Management',
+            'Health Worker Management',
+            'Facility Management',
+            'Health Records',
+            'Analytics & Reporting'
+        ]
+    })
+
+
+@require_http_methods(["GET"])
+def health_status(request):
+    """Health status endpoint."""
+    return JsonResponse({
+        'status': 'healthy',
+        'service': 'OpenCare-Africa',
+        'version': '1.0.0',
+        'timestamp': '2024-01-01T00:00:00Z'
+    })
+
+
+@login_required
+def user_profile(request):
+    """User profile view."""
+    context = {
+        'title': 'User Profile - OpenCare-Africa',
+        'user': request.user,
+    }
+    return render(request, 'core/user_profile.html', context)
+
+
+@login_required
+def edit_profile(request):
+    """Edit user profile view."""
+    context = {
+        'title': 'Edit Profile - OpenCare-Africa',
+        'user': request.user,
+    }
+    return render(request, 'core/edit_profile.html', context)
+
+
+def location_list(request):
+    """Location list view."""
+    context = {
+        'title': 'Locations - OpenCare-Africa',
+    }
+    return render(request, 'core/location_list.html', context)
+
+
+def location_detail(request, pk):
+    """Location detail view."""
+    context = {
+        'title': 'Location Details - OpenCare-Africa',
+        'location_id': pk,
+    }
+    return render(request, 'core/location_detail.html', context)
+
+
+def facility_list(request):
+    """Facility list view."""
+    context = {
+        'title': 'Health Facilities - OpenCare-Africa',
+    }
+    return render(request, 'core/facility_list.html', context)
+
+
+def facility_detail(request, pk):
+    """Facility detail view."""
+    context = {
+        'title': 'Facility Details - OpenCare-Africa',
+        'facility_id': pk,
+    }
+    return render(request, 'core/facility_detail.html', context)
+
+
+@login_required
+def reports(request):
+    """Reports view."""
+    context = {
+        'title': 'Reports - OpenCare-Africa',
+    }
+    return render(request, 'core/reports.html', context)
+
+
+@login_required
+def analytics(request):
+    """Analytics view."""
+    context = {
+        'title': 'Analytics - OpenCare-Africa',
+    }
+    return render(request, 'core/analytics.html', context)
+
+
+@login_required
+def settings_view(request):
+    """Settings view."""
+    context = {
+        'title': 'Settings - OpenCare-Africa',
+    }
+    return render(request, 'core/settings.html', context)
+
+
+@login_required
+def system_settings(request):
+    """System settings view."""
+    context = {
+        'title': 'System Settings - OpenCare-Africa',
+    }
+    return render(request, 'core/system_settings.html', context)

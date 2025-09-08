@@ -10,6 +10,9 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Import models (these will be created in their respective apps)
 # from apps.patients.models import Patient, PatientVisit
@@ -27,7 +30,7 @@ class PatientViewSet(viewsets.ModelViewSet):
     ViewSet for patient management.
     """
     permission_classes = [IsAuthenticated]
-    # queryset = Patient.objects.all()
+    queryset = User.objects.none()  # Placeholder until Patient model is implemented
     # serializer_class = PatientSerializer
     
     @action(detail=False, methods=['get'])
@@ -51,7 +54,7 @@ class HealthWorkerViewSet(viewsets.ModelViewSet):
     ViewSet for health worker management.
     """
     permission_classes = [IsAuthenticated]
-    # queryset = User.objects.filter(user_type__in=['doctor', 'nurse', 'midwife', 'community_worker'])
+    queryset = User.objects.filter(user_type__in=['doctor', 'nurse', 'midwife', 'community_worker'])
     # serializer_class = UserSerializer
     
     @action(detail=False, methods=['get'])
@@ -70,7 +73,7 @@ class FacilityViewSet(viewsets.ModelViewSet):
     ViewSet for health facility management.
     """
     permission_classes = [IsAuthenticated]
-    # queryset = HealthFacility.objects.all()
+    queryset = User.objects.none()  # Placeholder until HealthFacility model is implemented
     # serializer_class = HealthFacilitySerializer
     
     @action(detail=False, methods=['get'])
@@ -89,7 +92,7 @@ class PatientVisitViewSet(viewsets.ModelViewSet):
     ViewSet for patient visit management.
     """
     permission_classes = [IsAuthenticated]
-    # queryset = PatientVisit.objects.all()
+    queryset = User.objects.none()  # Placeholder until PatientVisit model is implemented
     # serializer_class = PatientVisitSerializer
     
     @action(detail=False, methods=['get'])
@@ -106,7 +109,7 @@ class HealthRecordViewSet(viewsets.ModelViewSet):
     ViewSet for health record management.
     """
     permission_classes = [IsAuthenticated]
-    # queryset = HealthRecord.objects.all()
+    queryset = User.objects.none()  # Placeholder until HealthRecord model is implemented
     # serializer_class = HealthRecordSerializer
     
     @action(detail=False, methods=['get'])
