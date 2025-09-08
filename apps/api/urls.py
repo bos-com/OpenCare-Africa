@@ -4,6 +4,7 @@ URL configuration for API app.
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from . import views
 
 app_name = 'api'
@@ -21,7 +22,8 @@ urlpatterns = [
     path('', include(router.urls)),
     
     # Authentication endpoints
-    path('auth/', include('rest_framework_simplejwt.urls')),
+    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     
     # Health check endpoint
     path('health/', views.health_check, name='health_check'),

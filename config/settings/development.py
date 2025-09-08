@@ -54,7 +54,4 @@ CSRF_COOKIE_SECURE = False
 ALLOWED_HOSTS = ['*']
 
 # Development-specific apps
-if DEBUG:
-    INSTALLED_APPS += [
-        'django_extensions',
-    ]
+# Note: django_extensions is already included in base settings

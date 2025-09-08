@@ -62,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'OpenCare_Africa.urls'
+ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
@@ -133,6 +133,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Site ID
 SITE_ID = 1
+
+# Custom User Model
+AUTH_USER_MODEL = 'core.User'
 
 # REST Framework
 REST_FRAMEWORK = {
@@ -242,6 +245,7 @@ LOGGING = {
 HEALTH_CHECK = {
     'DISK_USAGE_MAX': 90,  # percentage
     'MEMORY_MIN': 100,     # in MB
+    'CACHE_BACKENDS': [],  # Disable Redis health check for development
 }
 
 # API Documentation
