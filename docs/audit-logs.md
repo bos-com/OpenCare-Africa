@@ -50,5 +50,12 @@ reviewing incidents, or validating regulatory compliance.
 - **Compliance review**: Include audit log coverage in release checklists and
   periodic HIPAA/GDPR assessments.
 
+## Reviewing Logs
+
+- Administrative users can access the read-only endpoint at `/api/v1/audit-logs/`
+  to review and filter audit events.
+- Use query parameters such as `?model_name=patients.Patient` or `?action=view`
+  to narrow down entries when investigating incidents.
+
 Following these practices ensures every access to PHI is discoverable, auditable,
 and compliant with healthcare regulations.
