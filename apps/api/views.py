@@ -12,6 +12,15 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model
 
+from apps.api.permissions import IsClinicalStaff
+from apps.records.models import HealthRecord
+from apps.records.serializers import (
+    HealthRecordCreateSerializer,
+    HealthRecordDetailSerializer,
+    HealthRecordSerializer,
+)
+from apps.records.filters import HealthRecordFilter
+
 User = get_user_model()
 
 # Import models (these will be created in their respective apps)
@@ -106,21 +115,68 @@ class PatientVisitViewSet(viewsets.ModelViewSet):
 
 class HealthRecordViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for health record management.
+    Provide CRUD operations for patient health records.
+
+    Access is limited to authenticated clinical staff or superusers. Collections
+    support filtering by patient, provider, facility, record type, and date
+    ranges to keep browsing focused on relevant medical history.
     """
-    permission_classes = [IsAuthenticated]
-    queryset = User.objects.none()  # Placeholder until HealthRecord model is implemented
-    # serializer_class = HealthRecordSerializer
-    
-    @action(detail=False, methods=['get'])
+
+    permission_classes = [IsClinicalStaff]
+    queryset = (
+        HealthRecord.objects.select_related("patient", "facility", "attending_provider")
+        .prefetch_related("medications", "laboratory_tests")
+        .all()
+    )
+    serializer_class = HealthRecordSerializer
+    filterset_class = HealthRecordFilter
+    search_fields = [
+        "patient__patient_id",
+        "patient__first_name",
+        "patient__last_name",
+        "facility__name",
+        "attending_provider__first_name",
+        "attending_provider__last_name",
+    ]
+    ordering_fields = ["record_date", "created_at"]
+    ordering = ["-record_date"]
+
+    serializer_action_map = {
+        "list": HealthRecordSerializer,
+        "retrieve": HealthRecordDetailSerializer,
+        "create": HealthRecordCreateSerializer,
+        "update": HealthRecordCreateSerializer,
+        "partial_update": HealthRecordCreateSerializer,
+    }
+
+    def get_serializer_class(self):
+        """
+        Return the serializer configured for the current action.
+        """
+
+        return self.serializer_action_map.get(self.action, self.serializer_class)
+
+    @action(detail=False, methods=["get"], url_path="by-patient")
     def by_patient(self, request):
-        """Get health records by patient."""
-        patient_id = request.query_params.get('patient_id', '')
-        return Response({
-            'message': 'Health records by patient endpoint',
-            'patient_id': patient_id,
-            'results': []
-        })
+        """
+        List health records for a patient identifier.
+
+        This helper allows clinicians to quickly pull a patient's timeline by
+        passing their external `patient_id` as a query parameter.
+        """
+
+        patient_identifier = request.query_params.get("patient_id")
+        if not patient_identifier:
+            return Response({"results": []})
+
+        queryset = self.filter_queryset(
+            self.get_queryset().filter(patient__patient_id=patient_identifier)
+        )
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page or queryset, many=True)
+        if page is not None:
+            return self.get_paginated_response(serializer.data)
+        return Response({"results": serializer.data})
 
 
 @require_http_methods(["GET"])
